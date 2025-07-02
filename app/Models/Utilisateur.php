@@ -14,7 +14,11 @@ class Utilisateur extends Authenticatable
     protected $primaryKey = 'numero_utilisateur';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false; // Using custom date_creation, derniere_connexion
+    public $timestamps = false; // Pas de created_at/updated_at par défaut pour cette table
+
+    // Si vous voulez que Laravel gère les colonnes date_creation et derniere_connexion comme timestamps :
+    // const CREATED_AT = 'date_creation';
+    // const UPDATED_AT = 'derniere_connexion'; // Ou une autre colonne pour les mises à jour
 
     protected $fillable = [
         'numero_utilisateur',
@@ -52,9 +56,10 @@ class Utilisateur extends Authenticatable
         'tentatives_connexion_echouees' => 'integer',
         'compte_bloque_jusqua' => 'datetime',
         'preferences_2fa_active' => 'boolean',
-        'mot_de_passe' => 'hashed',
+        'mot_de_passe' => 'hashed', // Laravel gère le hachage automatiquement
     ];
 
+    // Relations
     public function niveauAccesDonne()
     {
         return $this->belongsTo(NiveauAccesDonne::class, 'id_niveau_acces_donne', 'id_niveau_acces_donne');

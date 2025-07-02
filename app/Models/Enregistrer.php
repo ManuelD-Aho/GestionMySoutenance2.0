@@ -13,7 +13,7 @@ class Enregistrer extends Model
     protected $primaryKey = 'id_enregistrement';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_enregistrement',
@@ -30,9 +30,10 @@ class Enregistrer extends Model
 
     protected $casts = [
         'date_action' => 'datetime',
-        'details_action' => 'array',
+        'details_action' => 'array', // Pour les colonnes JSON
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'numero_utilisateur', 'numero_utilisateur');

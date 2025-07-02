@@ -13,7 +13,7 @@ class Enseignant extends Model
     protected $primaryKey = 'numero_enseignant';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'numero_enseignant',
@@ -38,6 +38,7 @@ class Enseignant extends Model
         'date_naissance' => 'date',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'numero_utilisateur', 'numero_utilisateur');

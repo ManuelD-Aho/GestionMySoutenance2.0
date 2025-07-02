@@ -13,13 +13,14 @@ class StatutPaiementRef extends Model
     protected $primaryKey = 'id_statut_paiement';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_paiement',
         'libelle_statut_paiement',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, 'id_statut_paiement', 'id_statut_paiement');

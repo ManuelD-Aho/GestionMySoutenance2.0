@@ -13,13 +13,14 @@ class DecisionVoteRef extends Model
     protected $primaryKey = 'id_decision_vote';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_decision_vote',
         'libelle_decision_vote',
     ];
 
+    // Relations
     public function voteCommissions()
     {
         return $this->hasMany(VoteCommission::class, 'id_decision_vote', 'id_decision_vote');

@@ -13,7 +13,7 @@ class HistoriqueMotDePasse extends Model
     protected $primaryKey = 'id_historique_mdp';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_historique_mdp',
@@ -26,6 +26,7 @@ class HistoriqueMotDePasse extends Model
         'date_changement' => 'datetime',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'numero_utilisateur', 'numero_utilisateur');

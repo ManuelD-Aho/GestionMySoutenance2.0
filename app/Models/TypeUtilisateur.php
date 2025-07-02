@@ -13,13 +13,14 @@ class TypeUtilisateur extends Model
     protected $primaryKey = 'id_type_utilisateur';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_type_utilisateur',
         'libelle_type_utilisateur',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, 'id_type_utilisateur', 'id_type_utilisateur');

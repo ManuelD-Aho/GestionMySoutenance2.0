@@ -13,13 +13,14 @@ class StatutConformiteRef extends Model
     protected $primaryKey = 'id_statut_conformite';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_conformite',
         'libelle_statut_conformite',
     ];
 
+    // Relations
     public function approbations()
     {
         return $this->hasMany(Approuver::class, 'id_statut_conformite', 'id_statut_conformite');

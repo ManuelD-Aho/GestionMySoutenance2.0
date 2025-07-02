@@ -13,13 +13,14 @@ class Fonction extends Model
     protected $primaryKey = 'id_fonction';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_fonction',
         'libelle_fonction',
     ];
 
+    // Relations
     public function occupations()
     {
         return $this->hasMany(Occuper::class, 'id_fonction', 'id_fonction');

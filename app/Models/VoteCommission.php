@@ -13,7 +13,7 @@ class VoteCommission extends Model
     protected $primaryKey = 'id_vote';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_vote',
@@ -31,6 +31,7 @@ class VoteCommission extends Model
         'tour_vote' => 'integer',
     ];
 
+    // Relations
     public function sessionValidation()
     {
         return $this->belongsTo(SessionValidation::class, 'id_session', 'id_session');

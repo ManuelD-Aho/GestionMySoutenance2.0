@@ -13,7 +13,7 @@ class Penalite extends Model
     protected $primaryKey = 'id_penalite';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_penalite',
@@ -34,6 +34,7 @@ class Penalite extends Model
         'date_regularisation' => 'datetime',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, 'numero_carte_etudiant', 'numero_carte_etudiant');

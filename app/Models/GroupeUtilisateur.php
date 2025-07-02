@@ -13,13 +13,14 @@ class GroupeUtilisateur extends Model
     protected $primaryKey = 'id_groupe_utilisateur';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_groupe_utilisateur',
         'libelle_groupe_utilisateur',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, 'id_groupe_utilisateur', 'id_groupe_utilisateur');

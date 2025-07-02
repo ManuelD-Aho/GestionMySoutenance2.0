@@ -13,13 +13,14 @@ class NiveauEtude extends Model
     protected $primaryKey = 'id_niveau_etude';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_niveau_etude',
         'libelle_niveau_etude',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, 'id_niveau_etude', 'id_niveau_etude');

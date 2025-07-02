@@ -13,13 +13,14 @@ class StatutJury extends Model
     protected $primaryKey = 'id_statut_jury';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_jury',
         'libelle_statut_jury',
     ];
 
+    // Relations
     public function affectations()
     {
         return $this->hasMany(Affecter::class, 'id_statut_jury', 'id_statut_jury');

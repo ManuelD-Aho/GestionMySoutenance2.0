@@ -13,7 +13,7 @@ class Ue extends Model
     protected $primaryKey = 'id_ue';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_ue',
@@ -25,6 +25,7 @@ class Ue extends Model
         'credits_ue' => 'integer',
     ];
 
+    // Relations
     public function ecues()
     {
         return $this->hasMany(Ecue::class, 'id_ue', 'id_ue');

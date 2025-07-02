@@ -13,7 +13,7 @@ class SessionValidation extends Model
     protected $primaryKey = 'id_session';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_session',
@@ -34,6 +34,7 @@ class SessionValidation extends Model
         'nombre_votants_requis' => 'integer',
     ];
 
+    // Relations
     public function presidentSession()
     {
         return $this->belongsTo(Enseignant::class, 'id_president_session', 'numero_enseignant');

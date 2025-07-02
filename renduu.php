@@ -15,10 +15,10 @@ class Acquerir extends Model
     use HasFactory;
 
     protected $table = \'acquerir\';
-    protected $primaryKey = [\'id_grade\', \'numero_enseignant\'];
+    protected $primaryKey = [\'id_grade\', \'numero_enseignant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_grade\',
@@ -30,6 +30,7 @@ class Acquerir extends Model
         \'date_acquisition\' => \'date\',
     ];
 
+    // Relations
     public function grade()
     {
         return $this->belongsTo(Grade::class, \'id_grade\', \'id_grade\');
@@ -38,6 +39,27 @@ class Acquerir extends Model
     public function enseignant()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant\', \'numero_enseignant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -56,7 +78,7 @@ class Action extends Model
     protected $primaryKey = \'id_action\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_action\',
@@ -64,6 +86,7 @@ class Action extends Model
         \'categorie_action\',
     ];
 
+    // Relations
     public function enregistrements()
     {
         return $this->hasMany(Enregistrer::class, \'id_action\', \'id_action\');
@@ -87,10 +110,10 @@ class Affecter extends Model
     use HasFactory;
 
     protected $table = \'affecter\';
-    protected $primaryKey = [\'numero_enseignant\', \'id_rapport_etudiant\', \'id_statut_jury\'];
+    protected $primaryKey = [\'numero_enseignant\', \'id_rapport_etudiant\', \'id_statut_jury\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_enseignant\',
@@ -105,6 +128,7 @@ class Affecter extends Model
         \'date_affectation\' => \'datetime\',
     ];
 
+    // Relations
     public function enseignant()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant\', \'numero_enseignant\');
@@ -118,6 +142,27 @@ class Affecter extends Model
     public function statutJury()
     {
         return $this->belongsTo(StatutJury::class, \'id_statut_jury\', \'id_statut_jury\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -136,7 +181,7 @@ class AnneeAcademique extends Model
     protected $primaryKey = \'id_annee_academique\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_annee_academique\',
@@ -152,6 +197,7 @@ class AnneeAcademique extends Model
         \'est_active\' => \'boolean\',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, \'id_annee_academique\', \'id_annee_academique\');
@@ -180,10 +226,10 @@ class Approuver extends Model
     use HasFactory;
 
     protected $table = \'approuver\';
-    protected $primaryKey = [\'numero_personnel_administratif\', \'id_rapport_etudiant\'];
+    protected $primaryKey = [\'numero_personnel_administratif\', \'id_rapport_etudiant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_personnel_administratif\',
@@ -197,6 +243,7 @@ class Approuver extends Model
         \'date_verification_conformite\' => \'datetime\',
     ];
 
+    // Relations
     public function personnelAdministratif()
     {
         return $this->belongsTo(PersonnelAdministratif::class, \'numero_personnel_administratif\', \'numero_personnel_administratif\');
@@ -210,6 +257,27 @@ class Approuver extends Model
     public function statutConformiteRef()
     {
         return $this->belongsTo(StatutConformiteRef::class, \'id_statut_conformite\', \'id_statut_conformite\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -225,16 +293,17 @@ class Attribuer extends Model
     use HasFactory;
 
     protected $table = \'attribuer\';
-    protected $primaryKey = [\'numero_enseignant\', \'id_specialite\'];
+    protected $primaryKey = [\'numero_enseignant\', \'id_specialite\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_enseignant\',
         \'id_specialite\',
     ];
 
+    // Relations
     public function enseignant()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant\', \'numero_enseignant\');
@@ -243,6 +312,27 @@ class Attribuer extends Model
     public function specialite()
     {
         return $this->belongsTo(Specialite::class, \'id_specialite\', \'id_specialite\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -261,7 +351,7 @@ class CompteRendu extends Model
     protected $primaryKey = \'id_compte_rendu\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_compte_rendu\',
@@ -279,6 +369,7 @@ class CompteRendu extends Model
         \'date_limite_approbation\' => \'datetime\',
     ];
 
+    // Relations
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, \'id_rapport_etudiant\', \'id_rapport_etudiant\');
@@ -325,7 +416,7 @@ class ConformiteRapportDetail extends Model
     protected $primaryKey = \'id_conformite_detail\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_conformite_detail\',
@@ -340,6 +431,7 @@ class ConformiteRapportDetail extends Model
         \'date_verification\' => \'datetime\',
     ];
 
+    // Relations
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, \'id_rapport_etudiant\', \'id_rapport_etudiant\');
@@ -366,7 +458,7 @@ class Conversation extends Model
     protected $primaryKey = \'id_conversation\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_conversation\',
@@ -379,6 +471,7 @@ class Conversation extends Model
         \'date_creation_conv\' => \'datetime\',
     ];
 
+    // Relations
     public function messagesChat()
     {
         return $this->hasMany(MessageChat::class, \'id_conversation\', \'id_conversation\');
@@ -405,7 +498,7 @@ class CritereConformiteRef extends Model
     protected $primaryKey = \'id_critere\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_critere\',
@@ -418,6 +511,7 @@ class CritereConformiteRef extends Model
         \'est_actif\' => \'boolean\',
     ];
 
+    // Relations
     public function conformiteRapportDetails()
     {
         return $this->hasMany(ConformiteRapportDetail::class, \'id_critere\', \'id_critere\');
@@ -439,13 +533,14 @@ class DecisionPassageRef extends Model
     protected $primaryKey = \'id_decision_passage\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_decision_passage\',
         \'libelle_decision_passage\',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, \'id_decision_passage\', \'id_decision_passage\');
@@ -467,13 +562,14 @@ class DecisionValidationPvRef extends Model
     protected $primaryKey = \'id_decision_validation_pv\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_decision_validation_pv\',
         \'libelle_decision_validation_pv\',
     ];
 
+    // Relations
     public function validationPvs()
     {
         return $this->hasMany(ValidationPv::class, \'id_decision_validation_pv\', \'id_decision_validation_pv\');
@@ -495,13 +591,14 @@ class DecisionVoteRef extends Model
     protected $primaryKey = \'id_decision_vote\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_decision_vote\',
         \'libelle_decision_vote\',
     ];
 
+    // Relations
     public function voteCommissions()
     {
         return $this->hasMany(VoteCommission::class, \'id_decision_vote\', \'id_decision_vote\');
@@ -523,7 +620,7 @@ class Delegation extends Model
     protected $primaryKey = \'id_delegation\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_delegation\',
@@ -542,6 +639,7 @@ class Delegation extends Model
         \'date_fin\' => \'datetime\',
     ];
 
+    // Relations
     public function delegant()
     {
         return $this->belongsTo(Utilisateur::class, \'id_delegant\', \'numero_utilisateur\');
@@ -573,7 +671,7 @@ class DocumentGenere extends Model
     protected $primaryKey = \'id_document_genere\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_document_genere\',
@@ -591,6 +689,7 @@ class DocumentGenere extends Model
         \'version\' => \'integer\',
     ];
 
+    // Relations
     public function typeDocument()
     {
         return $this->belongsTo(TypeDocumentRef::class, \'id_type_document\', \'id_type_document\');
@@ -617,7 +716,7 @@ class Ecue extends Model
     protected $primaryKey = \'id_ecue\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_ecue\',
@@ -630,6 +729,7 @@ class Ecue extends Model
         \'credits_ecue\' => \'integer\',
     ];
 
+    // Relations
     public function ue()
     {
         return $this->belongsTo(Ue::class, \'id_ue\', \'id_ue\');
@@ -656,7 +756,7 @@ class Enregistrer extends Model
     protected $primaryKey = \'id_enregistrement\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_enregistrement\',
@@ -673,9 +773,10 @@ class Enregistrer extends Model
 
     protected $casts = [
         \'date_action\' => \'datetime\',
-        \'details_action\' => \'array\',
+        \'details_action\' => \'array\', // Pour les colonnes JSON
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -702,7 +803,7 @@ class Enseignant extends Model
     protected $primaryKey = \'numero_enseignant\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_enseignant\',
@@ -727,6 +828,7 @@ class Enseignant extends Model
         \'date_naissance\' => \'date\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -788,7 +890,7 @@ class Entreprise extends Model
     protected $primaryKey = \'id_entreprise\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_entreprise\',
@@ -800,6 +902,7 @@ class Entreprise extends Model
         \'contact_telephone\',
     ];
 
+    // Relations
     public function faireStages()
     {
         return $this->hasMany(FaireStage::class, \'id_entreprise\', \'id_entreprise\');
@@ -821,7 +924,7 @@ class Etudiant extends Model
     protected $primaryKey = \'numero_carte_etudiant\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_carte_etudiant\',
@@ -847,6 +950,7 @@ class Etudiant extends Model
         \'date_naissance\' => \'date\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -895,10 +999,10 @@ class Evaluer extends Model
     use HasFactory;
 
     protected $table = \'evaluer\';
-    protected $primaryKey = [\'numero_carte_etudiant\', \'id_ecue\', \'id_annee_academique\'];
+    protected $primaryKey = [\'numero_carte_etudiant\', \'id_ecue\', \'id_annee_academique\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_carte_etudiant\',
@@ -913,6 +1017,7 @@ class Evaluer extends Model
         \'note\' => \'decimal:2\',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
@@ -926,6 +1031,27 @@ class Evaluer extends Model
     public function anneeAcademique()
     {
         return $this->belongsTo(AnneeAcademique::class, \'id_annee_academique\', \'id_annee_academique\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -941,10 +1067,10 @@ class FaireStage extends Model
     use HasFactory;
 
     protected $table = \'faire_stage\';
-    protected $primaryKey = [\'id_entreprise\', \'numero_carte_etudiant\'];
+    protected $primaryKey = [\'id_entreprise\', \'numero_carte_etudiant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_entreprise\',
@@ -960,6 +1086,7 @@ class FaireStage extends Model
         \'date_fin_stage\' => \'date\',
     ];
 
+    // Relations
     public function entreprise()
     {
         return $this->belongsTo(Entreprise::class, \'id_entreprise\', \'id_entreprise\');
@@ -968,6 +1095,27 @@ class FaireStage extends Model
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -986,13 +1134,14 @@ class Fonction extends Model
     protected $primaryKey = \'id_fonction\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_fonction\',
         \'libelle_fonction\',
     ];
 
+    // Relations
     public function occupations()
     {
         return $this->hasMany(Occuper::class, \'id_fonction\', \'id_fonction\');
@@ -1014,7 +1163,7 @@ class Grade extends Model
     protected $primaryKey = \'id_grade\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_grade\',
@@ -1022,6 +1171,7 @@ class Grade extends Model
         \'abreviation_grade\',
     ];
 
+    // Relations
     public function acquisitions()
     {
         return $this->hasMany(Acquerir::class, \'id_grade\', \'id_grade\');
@@ -1043,13 +1193,14 @@ class GroupeUtilisateur extends Model
     protected $primaryKey = \'id_groupe_utilisateur\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_groupe_utilisateur\',
         \'libelle_groupe_utilisateur\',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, \'id_groupe_utilisateur\', \'id_groupe_utilisateur\');
@@ -1081,7 +1232,7 @@ class HistoriqueMotDePasse extends Model
     protected $primaryKey = \'id_historique_mdp\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_historique_mdp\',
@@ -1094,6 +1245,7 @@ class HistoriqueMotDePasse extends Model
         \'date_changement\' => \'datetime\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -1112,10 +1264,10 @@ class Inscrire extends Model
     use HasFactory;
 
     protected $table = \'inscrire\';
-    protected $primaryKey = [\'numero_carte_etudiant\', \'id_niveau_etude\', \'id_annee_academique\'];
+    protected $primaryKey = [\'numero_carte_etudiant\', \'id_niveau_etude\', \'id_annee_academique\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_carte_etudiant\',
@@ -1135,6 +1287,7 @@ class Inscrire extends Model
         \'date_paiement\' => \'datetime\',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
@@ -1159,6 +1312,27 @@ class Inscrire extends Model
     {
         return $this->belongsTo(DecisionPassageRef::class, \'id_decision_passage\', \'id_decision_passage\');
     }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
+    }
 }
 ',
     'LectureMessage' => '<?php
@@ -1173,10 +1347,10 @@ class LectureMessage extends Model
     use HasFactory;
 
     protected $table = \'lecture_message\';
-    protected $primaryKey = [\'id_message_chat\', \'numero_utilisateur\'];
+    protected $primaryKey = [\'id_message_chat\', \'numero_utilisateur\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_message_chat\',
@@ -1188,6 +1362,7 @@ class LectureMessage extends Model
         \'date_lecture\' => \'datetime\',
     ];
 
+    // Relations
     public function messageChat()
     {
         return $this->belongsTo(MessageChat::class, \'id_message_chat\', \'id_message_chat\');
@@ -1196,6 +1371,27 @@ class LectureMessage extends Model
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1214,7 +1410,7 @@ class MatriceNotificationRegle extends Model
     protected $primaryKey = \'id_regle\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_regle\',
@@ -1228,6 +1424,7 @@ class MatriceNotificationRegle extends Model
         \'est_active\' => \'boolean\',
     ];
 
+    // Relations
     public function actionDeclencheur()
     {
         return $this->belongsTo(Action::class, \'id_action_declencheur\', \'id_action\');
@@ -1254,7 +1451,7 @@ class MessageChat extends Model
     protected $primaryKey = \'id_message_chat\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_message_chat\',
@@ -1268,6 +1465,7 @@ class MessageChat extends Model
         \'date_envoi\' => \'datetime\',
     ];
 
+    // Relations
     public function conversation()
     {
         return $this->belongsTo(Conversation::class, \'id_conversation\', \'id_conversation\');
@@ -1299,13 +1497,14 @@ class NiveauAccesDonne extends Model
     protected $primaryKey = \'id_niveau_acces_donne\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_niveau_acces_donne\',
         \'libelle_niveau_acces_donne\',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, \'id_niveau_acces_donne\', \'id_niveau_acces_donne\');
@@ -1327,13 +1526,14 @@ class NiveauEtude extends Model
     protected $primaryKey = \'id_niveau_etude\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_niveau_etude\',
         \'libelle_niveau_etude\',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, \'id_niveau_etude\', \'id_niveau_etude\');
@@ -1360,7 +1560,7 @@ class Notification extends Model
     protected $primaryKey = \'id_notification\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_notification\',
@@ -1368,6 +1568,7 @@ class Notification extends Model
         \'contenu\',
     ];
 
+    // Relations
     public function receptions()
     {
         return $this->hasMany(Recevoir::class, \'id_notification\', \'id_notification\');
@@ -1386,10 +1587,10 @@ class Occuper extends Model
     use HasFactory;
 
     protected $table = \'occuper\';
-    protected $primaryKey = [\'id_fonction\', \'numero_enseignant\'];
+    protected $primaryKey = [\'id_fonction\', \'numero_enseignant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_fonction\',
@@ -1403,6 +1604,7 @@ class Occuper extends Model
         \'date_fin_occupation\' => \'date\',
     ];
 
+    // Relations
     public function fonction()
     {
         return $this->belongsTo(Fonction::class, \'id_fonction\', \'id_fonction\');
@@ -1411,6 +1613,27 @@ class Occuper extends Model
     public function enseignant()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant\', \'numero_enseignant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1429,7 +1652,7 @@ class ParametreSysteme extends Model
     protected $primaryKey = \'cle\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'cle\',
@@ -1451,16 +1674,17 @@ class ParticipantConversation extends Model
     use HasFactory;
 
     protected $table = \'participant_conversation\';
-    protected $primaryKey = [\'id_conversation\', \'numero_utilisateur\'];
+    protected $primaryKey = [\'id_conversation\', \'numero_utilisateur\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_conversation\',
         \'numero_utilisateur\',
     ];
 
+    // Relations
     public function conversation()
     {
         return $this->belongsTo(Conversation::class, \'id_conversation\', \'id_conversation\');
@@ -1469,6 +1693,27 @@ class ParticipantConversation extends Model
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1487,7 +1732,7 @@ class Penalite extends Model
     protected $primaryKey = \'id_penalite\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_penalite\',
@@ -1508,6 +1753,7 @@ class Penalite extends Model
         \'date_regularisation\' => \'datetime\',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
@@ -1544,7 +1790,7 @@ class PersonnelAdministratif extends Model
     protected $primaryKey = \'numero_personnel_administratif\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_personnel_administratif\',
@@ -1572,6 +1818,7 @@ class PersonnelAdministratif extends Model
         \'date_naissance\' => \'date\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -1608,7 +1855,7 @@ class Pister extends Model
     protected $primaryKey = \'id_piste\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_piste\',
@@ -1623,6 +1870,7 @@ class Pister extends Model
         \'acceder\' => \'boolean\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -1646,16 +1894,17 @@ class PvSessionRapport extends Model
     use HasFactory;
 
     protected $table = \'pv_session_rapport\';
-    protected $primaryKey = [\'id_compte_rendu\', \'id_rapport_etudiant\'];
+    protected $primaryKey = [\'id_compte_rendu\', \'id_rapport_etudiant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_compte_rendu\',
         \'id_rapport_etudiant\',
     ];
 
+    // Relations
     public function compteRendu()
     {
         return $this->belongsTo(CompteRendu::class, \'id_compte_rendu\', \'id_compte_rendu\');
@@ -1664,6 +1913,27 @@ class PvSessionRapport extends Model
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, \'id_rapport_etudiant\', \'id_rapport_etudiant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1680,9 +1950,13 @@ class QueueJob extends Model
 
     protected $table = \'queue_jobs\';
     protected $primaryKey = \'id\';
-    public $incrementing = true;
+    public $incrementing = true; // Cette table a une PK auto-incrémentée
     protected $keyType = \'integer\';
-    public $timestamps = false; // Using custom created_at, started_at, completed_at
+    public $timestamps = false; // Utilise des colonnes de timestamps personnalisées
+
+    // Mappage des colonnes de timestamps personnalisées
+    // const CREATED_AT = \'created_at\'; // Déjà par défaut
+    // const UPDATED_AT = null; // Pas de colonne updated_at dans votre schéma pour cette table
 
     protected $fillable = [
         \'job_name\',
@@ -1719,7 +1993,7 @@ class RapportEtudiant extends Model
     protected $primaryKey = \'id_rapport_etudiant\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_rapport_etudiant\',
@@ -1740,6 +2014,7 @@ class RapportEtudiant extends Model
         \'date_derniere_modif\' => \'datetime\',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
@@ -1806,7 +2081,7 @@ class RapportModele extends Model
     protected $primaryKey = \'id_modele\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_modele\',
@@ -1816,6 +2091,7 @@ class RapportModele extends Model
         \'statut\',
     ];
 
+    // Relations
     public function assignations()
     {
         return $this->hasMany(RapportModeleAssignation::class, \'id_modele\', \'id_modele\');
@@ -1839,16 +2115,17 @@ class RapportModeleAssignation extends Model
     use HasFactory;
 
     protected $table = \'rapport_modele_assignation\';
-    protected $primaryKey = [\'id_modele\', \'id_niveau_etude\'];
+    protected $primaryKey = [\'id_modele\', \'id_niveau_etude\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_modele\',
         \'id_niveau_etude\',
     ];
 
+    // Relations
     public function rapportModele()
     {
         return $this->belongsTo(RapportModele::class, \'id_modele\', \'id_modele\');
@@ -1857,6 +2134,27 @@ class RapportModeleAssignation extends Model
     public function niveauEtude()
     {
         return $this->belongsTo(NiveauEtude::class, \'id_niveau_etude\', \'id_niveau_etude\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1875,7 +2173,7 @@ class RapportModeleSection extends Model
     protected $primaryKey = \'id_section_modele\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_section_modele\',
@@ -1889,6 +2187,7 @@ class RapportModeleSection extends Model
         \'ordre\' => \'integer\',
     ];
 
+    // Relations
     public function rapportModele()
     {
         return $this->belongsTo(RapportModele::class, \'id_modele\', \'id_modele\');
@@ -1907,16 +2206,17 @@ class Rattacher extends Model
     use HasFactory;
 
     protected $table = \'rattacher\';
-    protected $primaryKey = [\'id_groupe_utilisateur\', \'id_traitement\'];
+    protected $primaryKey = [\'id_groupe_utilisateur\', \'id_traitement\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_groupe_utilisateur\',
         \'id_traitement\',
     ];
 
+    // Relations
     public function groupeUtilisateur()
     {
         return $this->belongsTo(GroupeUtilisateur::class, \'id_groupe_utilisateur\', \'id_groupe_utilisateur\');
@@ -1925,6 +2225,27 @@ class Rattacher extends Model
     public function traitement()
     {
         return $this->belongsTo(Traitement::class, \'id_traitement\', \'id_traitement\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -1943,7 +2264,7 @@ class Recevoir extends Model
     protected $primaryKey = \'id_reception\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_reception\',
@@ -1960,6 +2281,7 @@ class Recevoir extends Model
         \'date_lecture\' => \'datetime\',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'numero_utilisateur\', \'numero_utilisateur\');
@@ -1986,7 +2308,7 @@ class Reclamation extends Model
     protected $primaryKey = \'id_reclamation\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_reclamation\',
@@ -2005,6 +2327,7 @@ class Reclamation extends Model
         \'date_reponse\' => \'datetime\',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, \'numero_carte_etudiant\', \'numero_carte_etudiant\');
@@ -2033,10 +2356,10 @@ class Rendre extends Model
     use HasFactory;
 
     protected $table = \'rendre\';
-    protected $primaryKey = [\'numero_enseignant\', \'id_compte_rendu\'];
+    protected $primaryKey = [\'numero_enseignant\', \'id_compte_rendu\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'numero_enseignant\',
@@ -2048,6 +2371,7 @@ class Rendre extends Model
         \'date_action_sur_pv\' => \'datetime\',
     ];
 
+    // Relations
     public function enseignant()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant\', \'numero_enseignant\');
@@ -2056,6 +2380,27 @@ class Rendre extends Model
     public function compteRendu()
     {
         return $this->belongsTo(CompteRendu::class, \'id_compte_rendu\', \'id_compte_rendu\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -2071,10 +2416,10 @@ class SectionRapport extends Model
     use HasFactory;
 
     protected $table = \'section_rapport\';
-    protected $primaryKey = [\'id_rapport_etudiant\', \'titre_section\'];
+    protected $primaryKey = [\'id_rapport_etudiant\', \'titre_section\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_rapport_etudiant\',
@@ -2091,9 +2436,31 @@ class SectionRapport extends Model
         \'date_derniere_modif\' => \'datetime\',
     ];
 
+    // Relations
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, \'id_rapport_etudiant\', \'id_rapport_etudiant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -2109,10 +2476,10 @@ class Sequence extends Model
     use HasFactory;
 
     protected $table = \'sequences\';
-    protected $primaryKey = [\'nom_sequence\', \'annee\'];
+    protected $primaryKey = [\'nom_sequence\', \'annee\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'nom_sequence\',
@@ -2124,6 +2491,27 @@ class Sequence extends Model
         \'annee\' => \'integer\',
         \'valeur_actuelle\' => \'integer\',
     ];
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
+    }
 }
 ',
     'Session' => '<?php
@@ -2131,24 +2519,33 @@ class Sequence extends Model
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory; // Ajouté pour la cohérence
 
 class Session extends Model
 {
+    use HasFactory; // Ajouté pour la cohérence
+
+    protected $table = \'sessions\';
     protected $primaryKey = \'session_id\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
-        \'session_id\', \'session_data\', \'session_last_activity\', \'session_lifetime\', \'user_id\'
+        \'session_id\',
+        \'session_data\',
+        \'session_last_activity\',
+        \'session_lifetime\',
+        \'user_id\',
     ];
 
     protected $casts = [
         \'session_last_activity\' => \'integer\',
         \'session_lifetime\' => \'integer\',
-        \'session_data\' => \'string\',
+        // \'session_data\' => \'array\', // Si les données sont stockées en JSON, sinon \'string\'
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, \'user_id\', \'numero_utilisateur\');
@@ -2167,16 +2564,17 @@ class SessionRapport extends Model
     use HasFactory;
 
     protected $table = \'session_rapport\';
-    protected $primaryKey = [\'id_session\', \'id_rapport_etudiant\'];
+    protected $primaryKey = [\'id_session\', \'id_rapport_etudiant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_session\',
         \'id_rapport_etudiant\',
     ];
 
+    // Relations
     public function sessionValidation()
     {
         return $this->belongsTo(SessionValidation::class, \'id_session\', \'id_session\');
@@ -2185,6 +2583,27 @@ class SessionRapport extends Model
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, \'id_rapport_etudiant\', \'id_rapport_etudiant\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -2203,7 +2622,7 @@ class SessionValidation extends Model
     protected $primaryKey = \'id_session\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_session\',
@@ -2224,6 +2643,7 @@ class SessionValidation extends Model
         \'nombre_votants_requis\' => \'integer\',
     ];
 
+    // Relations
     public function presidentSession()
     {
         return $this->belongsTo(Enseignant::class, \'id_president_session\', \'numero_enseignant\');
@@ -2255,7 +2675,7 @@ class Specialite extends Model
     protected $primaryKey = \'id_specialite\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_specialite\',
@@ -2263,6 +2683,7 @@ class Specialite extends Model
         \'numero_enseignant_specialite\',
     ];
 
+    // Relations
     public function enseignantSpecialite()
     {
         return $this->belongsTo(Enseignant::class, \'numero_enseignant_specialite\', \'numero_enseignant\');
@@ -2289,13 +2710,14 @@ class StatutConformiteRef extends Model
     protected $primaryKey = \'id_statut_conformite\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_conformite\',
         \'libelle_statut_conformite\',
     ];
 
+    // Relations
     public function approbations()
     {
         return $this->hasMany(Approuver::class, \'id_statut_conformite\', \'id_statut_conformite\');
@@ -2317,13 +2739,14 @@ class StatutJury extends Model
     protected $primaryKey = \'id_statut_jury\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_jury\',
         \'libelle_statut_jury\',
     ];
 
+    // Relations
     public function affectations()
     {
         return $this->hasMany(Affecter::class, \'id_statut_jury\', \'id_statut_jury\');
@@ -2345,13 +2768,14 @@ class StatutPaiementRef extends Model
     protected $primaryKey = \'id_statut_paiement\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_paiement\',
         \'libelle_statut_paiement\',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, \'id_statut_paiement\', \'id_statut_paiement\');
@@ -2373,13 +2797,14 @@ class StatutPenaliteRef extends Model
     protected $primaryKey = \'id_statut_penalite\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_penalite\',
         \'libelle_statut_penalite\',
     ];
 
+    // Relations
     public function penalites()
     {
         return $this->hasMany(Penalite::class, \'id_statut_penalite\', \'id_statut_penalite\');
@@ -2401,13 +2826,14 @@ class StatutPvRef extends Model
     protected $primaryKey = \'id_statut_pv\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_pv\',
         \'libelle_statut_pv\',
     ];
 
+    // Relations
     public function compteRendus()
     {
         return $this->hasMany(CompteRendu::class, \'id_statut_pv\', \'id_statut_pv\');
@@ -2429,7 +2855,7 @@ class StatutRapportRef extends Model
     protected $primaryKey = \'id_statut_rapport\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_rapport\',
@@ -2441,6 +2867,7 @@ class StatutRapportRef extends Model
         \'etape_workflow\' => \'integer\',
     ];
 
+    // Relations
     public function rapportsEtudiant()
     {
         return $this->hasMany(RapportEtudiant::class, \'id_statut_rapport\', \'id_statut_rapport\');
@@ -2462,13 +2889,14 @@ class StatutReclamationRef extends Model
     protected $primaryKey = \'id_statut_reclamation\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_statut_reclamation\',
         \'libelle_statut_reclamation\',
     ];
 
+    // Relations
     public function reclamations()
     {
         return $this->hasMany(Reclamation::class, \'id_statut_reclamation\', \'id_statut_reclamation\');
@@ -2490,7 +2918,7 @@ class Traitement extends Model
     protected $primaryKey = \'id_traitement\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_traitement\',
@@ -2505,6 +2933,7 @@ class Traitement extends Model
         \'ordre_affichage\' => \'integer\',
     ];
 
+    // Relations
     public function parentTraitement()
     {
         return $this->belongsTo(Traitement::class, \'id_parent_traitement\', \'id_traitement\');
@@ -2546,7 +2975,7 @@ class TypeDocumentRef extends Model
     protected $primaryKey = \'id_type_document\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_type_document\',
@@ -2558,6 +2987,7 @@ class TypeDocumentRef extends Model
         \'requis_ou_non\' => \'boolean\',
     ];
 
+    // Relations
     public function documentsGeneres()
     {
         return $this->hasMany(DocumentGenere::class, \'id_type_document\', \'id_type_document\');
@@ -2579,13 +3009,14 @@ class TypeUtilisateur extends Model
     protected $primaryKey = \'id_type_utilisateur\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_type_utilisateur\',
         \'libelle_type_utilisateur\',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, \'id_type_utilisateur\', \'id_type_utilisateur\');
@@ -2607,7 +3038,7 @@ class Ue extends Model
     protected $primaryKey = \'id_ue\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_ue\',
@@ -2619,6 +3050,7 @@ class Ue extends Model
         \'credits_ue\' => \'integer\',
     ];
 
+    // Relations
     public function ecues()
     {
         return $this->hasMany(Ecue::class, \'id_ue\', \'id_ue\');
@@ -2641,7 +3073,11 @@ class Utilisateur extends Authenticatable
     protected $primaryKey = \'numero_utilisateur\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false; // Using custom date_creation, derniere_connexion
+    public $timestamps = false; // Pas de created_at/updated_at par défaut pour cette table
+
+    // Si vous voulez que Laravel gère les colonnes date_creation et derniere_connexion comme timestamps :
+    // const CREATED_AT = \'date_creation\';
+    // const UPDATED_AT = \'derniere_connexion\'; // Ou une autre colonne pour les mises à jour
 
     protected $fillable = [
         \'numero_utilisateur\',
@@ -2679,9 +3115,10 @@ class Utilisateur extends Authenticatable
         \'tentatives_connexion_echouees\' => \'integer\',
         \'compte_bloque_jusqua\' => \'datetime\',
         \'preferences_2fa_active\' => \'boolean\',
-        \'mot_de_passe\' => \'hashed\',
+        \'mot_de_passe\' => \'hashed\', // Laravel gère le hachage automatiquement
     ];
 
+    // Relations
     public function niveauAccesDonne()
     {
         return $this->belongsTo(NiveauAccesDonne::class, \'id_niveau_acces_donne\', \'id_niveau_acces_donne\');
@@ -2785,10 +3222,10 @@ class ValidationPv extends Model
     use HasFactory;
 
     protected $table = \'validation_pv\';
-    protected $primaryKey = [\'id_compte_rendu\', \'numero_enseignant\'];
+    protected $primaryKey = [\'id_compte_rendu\', \'numero_enseignant\']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_compte_rendu\',
@@ -2802,6 +3239,7 @@ class ValidationPv extends Model
         \'date_validation\' => \'datetime\',
     ];
 
+    // Relations
     public function compteRendu()
     {
         return $this->belongsTo(CompteRendu::class, \'id_compte_rendu\', \'id_compte_rendu\');
@@ -2815,6 +3253,27 @@ class ValidationPv extends Model
     public function decisionValidationPvRef()
     {
         return $this->belongsTo(DecisionValidationPvRef::class, \'id_decision_validation_pv\', \'id_decision_validation_pv\');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, \'=\', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
 ',
@@ -2833,7 +3292,7 @@ class VoteCommission extends Model
     protected $primaryKey = \'id_vote\';
     public $incrementing = false;
     protected $keyType = \'string\';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         \'id_vote\',
@@ -2851,6 +3310,7 @@ class VoteCommission extends Model
         \'tour_vote\' => \'integer\',
     ];
 
+    // Relations
     public function sessionValidation()
     {
         return $this->belongsTo(SessionValidation::class, \'id_session\', \'id_session\');
@@ -2876,16 +3336,18 @@ class VoteCommission extends Model
 
 $outputDir = __DIR__ . '/app/Models/';
 
+// Crée le répertoire si nécessaire
 if (!is_dir($outputDir)) {
     mkdir($outputDir, 0755, true);
 }
 
+// Génère chaque fichier de modèle
 foreach ($models as $modelName => $modelContent) {
     $filePath = $outputDir . $modelName . '.php';
     file_put_contents($filePath, $modelContent);
     echo "Created: " . $filePath . "\n";
 }
 
-echo "\nAll 69 Eloquent models have been generated successfully!\n";
+echo "\nAll 69 Eloquent models have been generated successfully with your specified comments and composite key handling!\n";
 
 ?>

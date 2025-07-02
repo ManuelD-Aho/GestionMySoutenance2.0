@@ -13,7 +13,7 @@ class CritereConformiteRef extends Model
     protected $primaryKey = 'id_critere';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_critere',
@@ -26,6 +26,7 @@ class CritereConformiteRef extends Model
         'est_actif' => 'boolean',
     ];
 
+    // Relations
     public function conformiteRapportDetails()
     {
         return $this->hasMany(ConformiteRapportDetail::class, 'id_critere', 'id_critere');

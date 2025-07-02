@@ -13,7 +13,7 @@ class TypeDocumentRef extends Model
     protected $primaryKey = 'id_type_document';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_type_document',
@@ -25,6 +25,7 @@ class TypeDocumentRef extends Model
         'requis_ou_non' => 'boolean',
     ];
 
+    // Relations
     public function documentsGeneres()
     {
         return $this->hasMany(DocumentGenere::class, 'id_type_document', 'id_type_document');

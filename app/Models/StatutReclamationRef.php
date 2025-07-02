@@ -13,13 +13,14 @@ class StatutReclamationRef extends Model
     protected $primaryKey = 'id_statut_reclamation';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_reclamation',
         'libelle_statut_reclamation',
     ];
 
+    // Relations
     public function reclamations()
     {
         return $this->hasMany(Reclamation::class, 'id_statut_reclamation', 'id_statut_reclamation');

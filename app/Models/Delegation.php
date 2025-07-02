@@ -13,7 +13,7 @@ class Delegation extends Model
     protected $primaryKey = 'id_delegation';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_delegation',
@@ -32,6 +32,7 @@ class Delegation extends Model
         'date_fin' => 'datetime',
     ];
 
+    // Relations
     public function delegant()
     {
         return $this->belongsTo(Utilisateur::class, 'id_delegant', 'numero_utilisateur');

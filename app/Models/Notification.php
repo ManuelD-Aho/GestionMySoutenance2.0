@@ -13,7 +13,7 @@ class Notification extends Model
     protected $primaryKey = 'id_notification';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_notification',
@@ -21,6 +21,7 @@ class Notification extends Model
         'contenu',
     ];
 
+    // Relations
     public function receptions()
     {
         return $this->hasMany(Recevoir::class, 'id_notification', 'id_notification');

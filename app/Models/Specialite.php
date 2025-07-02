@@ -13,7 +13,7 @@ class Specialite extends Model
     protected $primaryKey = 'id_specialite';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_specialite',
@@ -21,6 +21,7 @@ class Specialite extends Model
         'numero_enseignant_specialite',
     ];
 
+    // Relations
     public function enseignantSpecialite()
     {
         return $this->belongsTo(Enseignant::class, 'numero_enseignant_specialite', 'numero_enseignant');

@@ -13,13 +13,14 @@ class StatutPenaliteRef extends Model
     protected $primaryKey = 'id_statut_penalite';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_penalite',
         'libelle_statut_penalite',
     ];
 
+    // Relations
     public function penalites()
     {
         return $this->hasMany(Penalite::class, 'id_statut_penalite', 'id_statut_penalite');

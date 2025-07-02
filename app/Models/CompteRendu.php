@@ -13,7 +13,7 @@ class CompteRendu extends Model
     protected $primaryKey = 'id_compte_rendu';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_compte_rendu',
@@ -31,6 +31,7 @@ class CompteRendu extends Model
         'date_limite_approbation' => 'datetime',
     ];
 
+    // Relations
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, 'id_rapport_etudiant', 'id_rapport_etudiant');

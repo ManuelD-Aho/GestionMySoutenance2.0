@@ -10,10 +10,10 @@ class Inscrire extends Model
     use HasFactory;
 
     protected $table = 'inscrire';
-    protected $primaryKey = ['numero_carte_etudiant', 'id_niveau_etude', 'id_annee_academique'];
+    protected $primaryKey = ['numero_carte_etudiant', 'id_niveau_etude', 'id_annee_academique']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'numero_carte_etudiant',
@@ -33,6 +33,7 @@ class Inscrire extends Model
         'date_paiement' => 'datetime',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, 'numero_carte_etudiant', 'numero_carte_etudiant');
@@ -56,5 +57,26 @@ class Inscrire extends Model
     public function decisionPassageRef()
     {
         return $this->belongsTo(DecisionPassageRef::class, 'id_decision_passage', 'id_decision_passage');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, '=', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }

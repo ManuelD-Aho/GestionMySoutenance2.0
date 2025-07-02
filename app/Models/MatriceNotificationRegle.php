@@ -13,7 +13,7 @@ class MatriceNotificationRegle extends Model
     protected $primaryKey = 'id_regle';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_regle',
@@ -27,6 +27,7 @@ class MatriceNotificationRegle extends Model
         'est_active' => 'boolean',
     ];
 
+    // Relations
     public function actionDeclencheur()
     {
         return $this->belongsTo(Action::class, 'id_action_declencheur', 'id_action');

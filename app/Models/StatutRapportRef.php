@@ -13,7 +13,7 @@ class StatutRapportRef extends Model
     protected $primaryKey = 'id_statut_rapport';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_statut_rapport',
@@ -25,6 +25,7 @@ class StatutRapportRef extends Model
         'etape_workflow' => 'integer',
     ];
 
+    // Relations
     public function rapportsEtudiant()
     {
         return $this->hasMany(RapportEtudiant::class, 'id_statut_rapport', 'id_statut_rapport');

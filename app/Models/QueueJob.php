@@ -11,9 +11,13 @@ class QueueJob extends Model
 
     protected $table = 'queue_jobs';
     protected $primaryKey = 'id';
-    public $incrementing = true;
+    public $incrementing = true; // Cette table a une PK auto-incrémentée
     protected $keyType = 'integer';
-    public $timestamps = false; // Using custom created_at, started_at, completed_at
+    public $timestamps = false; // Utilise des colonnes de timestamps personnalisées
+
+    // Mappage des colonnes de timestamps personnalisées
+    // const CREATED_AT = 'created_at'; // Déjà par défaut
+    // const UPDATED_AT = null; // Pas de colonne updated_at dans votre schéma pour cette table
 
     protected $fillable = [
         'job_name',

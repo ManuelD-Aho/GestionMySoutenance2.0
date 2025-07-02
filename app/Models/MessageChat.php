@@ -13,7 +13,7 @@ class MessageChat extends Model
     protected $primaryKey = 'id_message_chat';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_message_chat',
@@ -27,6 +27,7 @@ class MessageChat extends Model
         'date_envoi' => 'datetime',
     ];
 
+    // Relations
     public function conversation()
     {
         return $this->belongsTo(Conversation::class, 'id_conversation', 'id_conversation');

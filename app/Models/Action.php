@@ -13,7 +13,7 @@ class Action extends Model
     protected $primaryKey = 'id_action';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_action',
@@ -21,6 +21,7 @@ class Action extends Model
         'categorie_action',
     ];
 
+    // Relations
     public function enregistrements()
     {
         return $this->hasMany(Enregistrer::class, 'id_action', 'id_action');

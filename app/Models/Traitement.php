@@ -13,7 +13,7 @@ class Traitement extends Model
     protected $primaryKey = 'id_traitement';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_traitement',
@@ -28,6 +28,7 @@ class Traitement extends Model
         'ordre_affichage' => 'integer',
     ];
 
+    // Relations
     public function parentTraitement()
     {
         return $this->belongsTo(Traitement::class, 'id_parent_traitement', 'id_traitement');

@@ -13,7 +13,7 @@ class AnneeAcademique extends Model
     protected $primaryKey = 'id_annee_academique';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_annee_academique',
@@ -29,6 +29,7 @@ class AnneeAcademique extends Model
         'est_active' => 'boolean',
     ];
 
+    // Relations
     public function inscriptions()
     {
         return $this->hasMany(Inscrire::class, 'id_annee_academique', 'id_annee_academique');

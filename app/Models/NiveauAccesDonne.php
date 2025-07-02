@@ -13,13 +13,14 @@ class NiveauAccesDonne extends Model
     protected $primaryKey = 'id_niveau_acces_donne';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_niveau_acces_donne',
         'libelle_niveau_acces_donne',
     ];
 
+    // Relations
     public function utilisateurs()
     {
         return $this->hasMany(Utilisateur::class, 'id_niveau_acces_donne', 'id_niveau_acces_donne');

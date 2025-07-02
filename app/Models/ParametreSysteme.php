@@ -13,7 +13,7 @@ class ParametreSysteme extends Model
     protected $primaryKey = 'cle';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'cle',

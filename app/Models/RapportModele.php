@@ -13,7 +13,7 @@ class RapportModele extends Model
     protected $primaryKey = 'id_modele';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_modele',
@@ -23,6 +23,7 @@ class RapportModele extends Model
         'statut',
     ];
 
+    // Relations
     public function assignations()
     {
         return $this->hasMany(RapportModeleAssignation::class, 'id_modele', 'id_modele');

@@ -13,7 +13,7 @@ class Entreprise extends Model
     protected $primaryKey = 'id_entreprise';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_entreprise',
@@ -25,6 +25,7 @@ class Entreprise extends Model
         'contact_telephone',
     ];
 
+    // Relations
     public function faireStages()
     {
         return $this->hasMany(FaireStage::class, 'id_entreprise', 'id_entreprise');

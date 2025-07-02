@@ -13,7 +13,7 @@ class RapportEtudiant extends Model
     protected $primaryKey = 'id_rapport_etudiant';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_rapport_etudiant',
@@ -34,6 +34,7 @@ class RapportEtudiant extends Model
         'date_derniere_modif' => 'datetime',
     ];
 
+    // Relations
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, 'numero_carte_etudiant', 'numero_carte_etudiant');

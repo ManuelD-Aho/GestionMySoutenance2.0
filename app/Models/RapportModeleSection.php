@@ -13,7 +13,7 @@ class RapportModeleSection extends Model
     protected $primaryKey = 'id_section_modele';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_section_modele',
@@ -27,6 +27,7 @@ class RapportModeleSection extends Model
         'ordre' => 'integer',
     ];
 
+    // Relations
     public function rapportModele()
     {
         return $this->belongsTo(RapportModele::class, 'id_modele', 'id_modele');

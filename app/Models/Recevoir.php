@@ -13,7 +13,7 @@ class Recevoir extends Model
     protected $primaryKey = 'id_reception';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_reception',
@@ -30,6 +30,7 @@ class Recevoir extends Model
         'date_lecture' => 'datetime',
     ];
 
+    // Relations
     public function utilisateur()
     {
         return $this->belongsTo(Utilisateur::class, 'numero_utilisateur', 'numero_utilisateur');

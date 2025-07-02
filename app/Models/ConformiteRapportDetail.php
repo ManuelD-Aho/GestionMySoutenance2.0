@@ -13,7 +13,7 @@ class ConformiteRapportDetail extends Model
     protected $primaryKey = 'id_conformite_detail';
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_conformite_detail',
@@ -28,6 +28,7 @@ class ConformiteRapportDetail extends Model
         'date_verification' => 'datetime',
     ];
 
+    // Relations
     public function rapportEtudiant()
     {
         return $this->belongsTo(RapportEtudiant::class, 'id_rapport_etudiant', 'id_rapport_etudiant');

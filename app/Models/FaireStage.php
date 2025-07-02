@@ -10,10 +10,10 @@ class FaireStage extends Model
     use HasFactory;
 
     protected $table = 'faire_stage';
-    protected $primaryKey = ['id_entreprise', 'numero_carte_etudiant'];
+    protected $primaryKey = ['id_entreprise', 'numero_carte_etudiant']; // Clé primaire composite
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    public $timestamps = false; // Pas de created_at/updated_at
 
     protected $fillable = [
         'id_entreprise',
@@ -29,6 +29,7 @@ class FaireStage extends Model
         'date_fin_stage' => 'date',
     ];
 
+    // Relations
     public function entreprise()
     {
         return $this->belongsTo(Entreprise::class, 'id_entreprise', 'id_entreprise');
@@ -37,5 +38,26 @@ class FaireStage extends Model
     public function etudiant()
     {
         return $this->belongsTo(Etudiant::class, 'numero_carte_etudiant', 'numero_carte_etudiant');
+    }
+
+    /**
+     * Set the keys for a save update query.
+     * Required for composite primary keys.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected function setKeysForSaveQuery($query)
+    {
+        $keys = $this->getKeyName();
+        if (!is_array($keys)) {
+            return parent::setKeysForSaveQuery($query);
+        }
+
+        foreach ($keys as $key) {
+            $query->where($key, '=', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
     }
 }
