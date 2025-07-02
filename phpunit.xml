@@ -22,8 +22,15 @@
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!-- CHANGEMENT ICI : Utiliser la connexion MySQL -->
+        <env name="DB_CONNECTION" value="mysql"/>
+        <!-- Utiliser une base de données de test SÉPARÉE pour éviter de corrompre vos données de développement -->
+        <env name="DB_DATABASE" value="mysoutenance"/>
+        <env name="DB_HOST" value="db"/> <!-- Nom du service DB dans docker-compose -->
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_USERNAME" value="root"/> <!-- Ou l'utilisateur que vous utilisez pour la DB de test -->
+        <env name="DB_PASSWORD" value="root123"/> <!-- Ou le mot de passe de cet utilisateur -->
+
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
