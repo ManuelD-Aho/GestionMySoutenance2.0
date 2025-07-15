@@ -26,10 +26,10 @@
         <env name="DB_CONNECTION" value="mysql"/>
         <!-- Utiliser une base de données de test SÉPARÉE pour éviter de corrompre vos données de développement -->
         <env name="DB_DATABASE" value="mysoutenance"/>
-        <env name="DB_HOST" value="db"/> <!-- Nom du service DB dans docker-compose -->
+        <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_PORT" value="3306"/>
-        <env name="DB_USERNAME" value="root"/> <!-- Ou l'utilisateur que vous utilisez pour la DB de test -->
-        <env name="DB_PASSWORD" value="root123"/> <!-- Ou le mot de passe de cet utilisateur -->
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value=""/>
 
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>

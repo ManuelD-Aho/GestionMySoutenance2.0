@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log; // N'oubliez pas d'importer la façade Loguse App\Http\Controllers\HomeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -29,6 +30,10 @@ use App\Http\Controllers\AdministrativePersonnel\SchoolingController;
 */
 
 // --- Routes Publiques et Authentification ---
+Route::get('/', function () {
+    Log::info('Accès à la page d\'accueil.'); // Ligne de test
+    return view('welcome');
+});
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
